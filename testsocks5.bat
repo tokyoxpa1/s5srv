@@ -1,0 +1,1 @@
+cmd /k python testsocks5.py -s 192.168.1.200:30678
