@@ -86,6 +86,8 @@ curl --socks5 127.0.0.1:30678 http://example.com
 ```bash
 python testsocks5.bat
 ```
+需要驗證的話
+python testsocks5.py -s HOST_IP:30678 -u Username -p Password
 ※ 請將IP設置為本機在局域網路或網際網路上的IP以確保UDP功能正常運行
 
 ## 性能優化
