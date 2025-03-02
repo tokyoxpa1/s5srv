@@ -47,7 +47,7 @@ BUFFER_SIZE = 65536
 
 def setup_logging():
     config = configparser.ConfigParser()
-    config.read('s5.ini')
+    config.read('s5.ini', encoding='utf-8')
     
     if config.has_section('Logging') and config.getboolean('Logging', 'EnableLogging', fallback=False):
         log_level = config.get('Logging', 'LogLevel', fallback='DEBUG')
@@ -70,7 +70,7 @@ class ThreadingTCPServer(ThreadingMixIn, TCPServer):
 
     def load_config(self):
         self.config = configparser.ConfigParser()
-        self.config.read('s5.ini')
+        self.config.read('s5.ini', encoding='utf-8')
         self.enable_validation = self.config.getboolean('Authentication', 'EnableValidation', fallback=False)
         self.auth_config = {
             'username': self.config.get('Authentication', 'Username', fallback=''),
@@ -485,7 +485,7 @@ class SocksProxy(StreamRequestHandler):
 def main():
     setup_logging()
     config = configparser.ConfigParser()
-    config.read('s5.ini')
+    config.read('s5.ini', encoding='utf-8')
     port = config.getint('Server', 'Port', fallback=30678)
     ipv4_bind = config.get('Server', 'IPv4_Bind', fallback='0.0.0.0')
     ipv6_bind = config.get('Server', 'IPv6_Bind', fallback='::')
