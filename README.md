@@ -71,8 +71,6 @@ python s5.py
 ./s5
 ```
 
-服務器啟動後，會在控制台顯示運行狀態和綁定地址。
-
 ## 連接測試
 
 可以使用以下方法測試服務器是否正常運行：
@@ -84,7 +82,7 @@ curl --socks5 127.0.0.1:30678 http://example.com
 
 2. 使用提供的測試腳本：
 ```bash
-python testsocks5.bat
+testsocks5.bat
 ```
 需要驗證的話
 python testsocks5.py -s HOST_IP:30678 -u Username -p Password
