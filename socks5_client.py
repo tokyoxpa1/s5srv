@@ -728,54 +728,6 @@ def test_udp_dns():
     finally:
         client.close()
 
-def test_ipv6():
-    """測試IPv6連接"""
-    try:
-        logger.info("\n=== 測試IPv6連接 ===")
-        ipv6_dns = "2001:4860:4860::8888"  # Google IPv6 DNS
-        
-        # 測試連接到IPv6 DNS服務器
-        client = Socks5Client()
-        if not client.connect() or not client.auth():
-            logger.error("SOCKS5連接/認證失敗")
-            return
-        
-        # 測試TCP連接到IPv6地址
-        if client.request(ipv6_dns, 53):
-            logger.info(f"成功連接到IPv6地址: {ipv6_dns}:53")
-        
-        client.close()
-        
-        # 測試UDP連接到IPv6地址
-        client = Socks5Client()
-        if client.connect() and client.auth() and client.request(ipv6_dns, 53, udp=True):
-            # 構建DNS查詢（和上面相同）
-            query = struct.pack(
-                '!HHHHHH',
-                0x5678,     # 不同的Transaction ID
-                0x0100,     # Flags: 標準查詢
-                1, 0, 0, 0  # Questions:1, Answers:0, Auth:0, Additional:0
-            )
-            
-            # 添加查詢域名
-            for part in test_url.split('.'):
-                query += bytes([len(part)]) + part.encode()
-            query += b'\x00'  # 域名結束符
-            
-            # AAAA記錄 (IPv6地址)
-            query += struct.pack('!HH', 28, 1)
-            
-            # 發送查詢並等待回應
-            client.send_udp(query, ipv6_dns, 53)
-            data, addr, port = client.recv_udp()
-            logger.info(f"收到IPv6 DNS回應: {len(data)}字節 來自 {addr}:{port}")
-        
-        client.close()
-        logger.info("IPv6測試完成")
-        
-    except Exception as e:
-        logger.error(f"IPv6測試失敗: {e}")
-
 if __name__ == '__main__':
     try:
         # TCP連接測試
@@ -788,9 +740,6 @@ if __name__ == '__main__':
 
         # UDP DNS測試
         test_udp_dns()
-        
-        # IPv6 連接測試
-        test_ipv6()
         
         # HTTPS連接測試
         logger.info("\n=== 測試HTTPS連接 ===")
